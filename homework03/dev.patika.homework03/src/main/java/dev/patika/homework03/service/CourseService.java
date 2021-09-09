@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,9 +25,12 @@ public class CourseService implements BaseService<Course>{
 
     @Override
     @Transactional(readOnly = true)
-    public Course findById(int id) {
-        return repository.findById(id).get();
-    }
+
+    public Optional<Course> findById(int id) {
+        return repository.findById(id);
+        }
+
+
 
     @Override
     @Transactional
@@ -37,6 +41,7 @@ public class CourseService implements BaseService<Course>{
     @Override
     @Transactional
     public void deleteById(int id) {
+        Optional<Course> result = findById(id);
         repository.deleteById(id);
     }
 
@@ -44,5 +49,15 @@ public class CourseService implements BaseService<Course>{
     @Transactional
     public Course updateOnDatabase(Course course) {
         return  repository.save(course);
+    }
+
+    @Transactional
+    public List<Course> findByNameContaining(String name) {
+        return repository.findByCourseNameContaining(name);
+    }
+
+    @Transactional
+    public void deleteCourseByName(String name) {
+         repository.deleteCourseByCourseName(name);
     }
 }

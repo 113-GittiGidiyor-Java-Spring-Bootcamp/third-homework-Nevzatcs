@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
-@Builder
+@SuperBuilder
 public class Instructor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

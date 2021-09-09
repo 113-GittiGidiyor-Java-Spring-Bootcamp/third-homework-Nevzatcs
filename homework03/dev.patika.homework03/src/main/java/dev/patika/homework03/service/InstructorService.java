@@ -3,12 +3,14 @@ package dev.patika.homework03.service;
 import dev.patika.homework03.dao.InstructorDAO;
 import dev.patika.homework03.model.Instructor;
 
+import dev.patika.homework03.model.PermanentInstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +35,8 @@ public class InstructorService implements BaseService<Instructor> {
 
     @Override
     @Transactional(readOnly = true)
-    public Instructor findById(int id) {
-        return (Instructor) repository.findById(id).get();
+    public Optional<Instructor> findById(int id) {
+        return repository.findById(id);
     }
 
     @Override
@@ -53,5 +55,20 @@ public class InstructorService implements BaseService<Instructor> {
     @Transactional
     public Instructor updateOnDatabase(Instructor instructor) {
         return (Instructor) repository.save(instructor);
+    }
+
+    @Transactional
+    public void deleteByName(String name) {
+        repository.deleteByName(name);
+    }
+
+    @Transactional
+    public List<PermanentInstructor> findTop3ByOrderByFixedSalaryDesc() {
+        return repository.findTop3ByOrderByFixedSalaryDesc();
+    }
+
+    @Transactional
+    public List<PermanentInstructor> findTop3ByOrderByFixedSalaryAsc() {
+        return repository.findTop3ByOrderByFixedSalaryAsc();
     }
 }

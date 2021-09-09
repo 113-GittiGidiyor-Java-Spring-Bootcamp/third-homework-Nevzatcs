@@ -1,9 +1,6 @@
 package dev.patika.homework03.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -21,10 +18,10 @@ public class Student  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String s_name;
-    private LocalDate s_birthDate;
-    private String s_address;
-    private String s_gender;
+    private String name;
+    private LocalDate birthDate;
+    private String address;
+    private String gender;
 
     @ManyToMany
     private List<Course> studentCourse = new ArrayList<>();

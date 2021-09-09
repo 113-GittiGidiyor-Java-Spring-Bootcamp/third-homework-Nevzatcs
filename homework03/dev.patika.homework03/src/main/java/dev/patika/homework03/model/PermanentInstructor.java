@@ -3,6 +3,7 @@ package dev.patika.homework03.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
 
@@ -11,9 +12,10 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
+@SuperBuilder
 public class PermanentInstructor extends Instructor{
     private double fixedSalary;
+
 
 
 }

@@ -1,5 +1,7 @@
 package dev.patika.homework03.controller;
 
+import dev.patika.homework03.dao.StudentGenderStatistics;
+import dev.patika.homework03.model.Course;
 import dev.patika.homework03.model.Student;
 import dev.patika.homework03.service.StudentService;
 
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -31,19 +34,35 @@ public class StudentController {
         return studentService.save(student);
     }
 
-    @DeleteMapping(value = "/students/{id}")
-    public void deleteStudentById(@PathVariable int id){
+    @GetMapping(value = "/students/deleteById/{id}")
+    public String deleteStudentById(@PathVariable int id){
         studentService.deleteById(id);
-    }
-    @GetMapping("/students/{id}")
-    public Student findStudentById(@PathVariable int id){
-        return  studentService.findById(id);
+        return "Student with id: " + id + " is deleted...";
     }
 
-    @PutMapping("/students")
+    @GetMapping("/students/{id}")
+    public ResponseEntity<Student> findCourseById(@PathVariable int id) {
+        Optional<Student> resultOptional = studentService.findById(id);
+        if (resultOptional.isPresent()) {
+            return new ResponseEntity<>(resultOptional.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+
+    @PutMapping("/students/{id}")
     public Student updateStudent(@RequestBody Student student, @PathVariable int id){
        return studentService.updateOnDatabase(student);
     }
+    @GetMapping("/students/getGendersWithGrouping")
+    public List<StudentGenderStatistics> getGendersWithGrouping(){
+        return studentService.getGendersWithGrouping();
+    }
 
+    @GetMapping(value = "/students/deleteByName/{name}")
+    public String deleteStudentByName(@PathVariable String name){
+        studentService.deleteStudentByName(name);
+        return "Deleted";
+    }
 
 }

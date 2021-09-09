@@ -1,6 +1,7 @@
 package dev.patika.homework03.service;
 
 import dev.patika.homework03.dao.StudentDAO;
+import dev.patika.homework03.dao.StudentGenderStatistics;
 import dev.patika.homework03.model.Student;
 
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +35,8 @@ public class StudentService implements BaseService<Student> {
 
     @Override
     @Transactional(readOnly = true)
-    public Student findById(int id) {
-        return (Student) repository.findById(id).get();
+    public Optional<Student> findById(int id) {
+        return  repository.findById(id);
     }
 
     @Override
@@ -52,5 +54,14 @@ public class StudentService implements BaseService<Student> {
     @Override
     public Student updateOnDatabase(Student student) {
         return (Student) repository.save(student);
+    }
+
+    @Transactional(readOnly = true)
+    public List<StudentGenderStatistics> getGendersWithGrouping() {
+        return repository.getGendersWithGrouping();
+    }
+    @Transactional
+    public void deleteStudentByName(String name) {
+        repository.deleteByName(name);
     }
 }

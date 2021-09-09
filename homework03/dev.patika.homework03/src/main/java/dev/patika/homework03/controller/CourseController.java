@@ -1,5 +1,6 @@
 package dev.patika.homework03.controller;
 
+import dev.patika.homework03.dao.CourseDAO;
 import dev.patika.homework03.model.Course;
 import dev.patika.homework03.service.CourseService;
 
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -30,13 +32,18 @@ public class CourseController {
         return courseService.save(course);
     }
 
-    @DeleteMapping(value = "/courses/{id}")
-    public void deleteCourseById(@PathVariable int id){
+    @GetMapping(value = "/courses/deleteById/{id}")
+    public String deleteCourseById(@PathVariable int id){
         courseService.deleteById(id);
+        return "Course with id: " + " is deleted...";
     }
     @GetMapping("/courses/{id}")
-    public Course findCourseById(@PathVariable int id){
-        return  courseService.findById(id);
+    public ResponseEntity<Course> findCourseById(@PathVariable int id) {
+        Optional<Course> resultOptional = courseService.findById(id);
+        if (resultOptional.isPresent()) {
+            return new ResponseEntity<>(resultOptional.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/courses")
@@ -44,5 +51,14 @@ public class CourseController {
         return   courseService.updateOnDatabase(course);
     }
 
+    @GetMapping("/courses/findByNameContaining/{name}")
+    public List<Course> findByNameContaining(@PathVariable String name){
+        return courseService.findByNameContaining(name);
+    }
 
+    @GetMapping(value = "/courses/deleteByName/{name}")
+    public String deleteByName(@PathVariable String name){
+        courseService.deleteCourseByName(name);
+        return "Course with name : " + name + " is deleted";
+    }
 }
